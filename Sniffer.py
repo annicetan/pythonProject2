@@ -1,23 +1,24 @@
-# First import the socket library
-import socket;
+import requests
+import scrapy
 
-# Create a socket object
-s = socket.socket();
-print("Socket created");
+url = 'https://brickset.com/sets/year-2009'
+req = requests.get(url)
+print(req.text)
 
-# Connect to port number
-port = 4567;
+print("Status code:")
+print("\t *", req.status_code)
 
-# Bind to the port
-s.bind((",port));
-        print("Socket bind to %s" %(port));
+h = requests.head(url)
+print("Header:")
+print("**********")
 
-# Listen to port
-s.listen(5);
-print("Socket is listening...");
+for line in h.headers:
+    print("\t", line, ":", h.headers[line])
+print("**********")
 
-# Create a forever loop to listen
-while True:
-    # Establish a connection with client
-    c, addr = s.accept();
-    print("Connection from",addr);
+headers = {
+    'User-Agent': 'Mobile'
+}
+modified_ua = requests.get(url, headers=headers)
+print(modified_ua.request.headers)
+print("**************")
